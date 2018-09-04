@@ -11,8 +11,9 @@ class XTabbedWindow
 
   attr_reader :window, :tabs
 
-  def initialize(name)
+  def initialize(name, new_tab: "Ctrl+t", scan_tabs: true)
 
+    @new_tab = new_tab
     a = WMCtrl.instance.windows
     @window = a.detect {|x| x.title =~ /#{name}/i}
 
@@ -20,12 +21,16 @@ class XTabbedWindow
       sleep 0.3
       @window.activate
     end
+    
+    @tabs = []
 
-    read_tabs()
+    read_tabs() if scan_tabs
 
   end
 
   def goto_tab(pattern)
+    
+    read_tabs if @tabs.empty?
 
     regex = pattern.is_a?(String) ? /^#{pattern}/i : pattern
 
@@ -48,6 +53,13 @@ class XTabbedWindow
     sleep 0.1
     i.times { XDo::Keyboard.char("Ctrl+Tab") }
 
+  end
+  
+  def new_tab()
+    @window.activate
+    sleep 0.05
+    XDo::Keyboard.char(@new_tab)    
+    sleep 0.3
   end
 
   def next_tab()
@@ -76,6 +88,14 @@ class XTabbedWindow
     @tabs
 
   end  
+  
+  def tab?(obj)
+    
+    read_tabs if @tabs.empty?
+    regex = obj.is_a?(String) ? /^#{obj}|#{obj}/ : obj
+    @tabs.grep(regex).any?
+    
+  end
 
   def title()
     sleep 0.05

@@ -1,7 +1,8 @@
 Gem::Specification.new do |s|
   s.name = 'xtabbedwindow'
-  s.version = '0.1.0'
-  s.summary = 'Finds and selects a tabbed document within a window automatically (X11 Windows only).'
+  s.version = '0.1.1'
+  s.summary = 'Finds and selects a tabbed document within a window ' + 
+      'automatically (X11 Windows only).'
   s.authors = ['James Robertson']
   s.files = Dir['lib/xtabbedwindow.rb']
   s.add_runtime_dependency('xdo', '~> 0.0', '>=0.0.4')  
