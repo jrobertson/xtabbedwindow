@@ -32,10 +32,12 @@ class XTabbedWindow
   end
 
   def goto_tab(pattern)
+
+    regex = pattern.is_a?(String) ? /^#{pattern}/i : pattern    
+    
+    return true if title() =~ regex
     
     read_tabs if @tabs.empty?
-
-    regex = pattern.is_a?(String) ? /^#{pattern}/i : pattern
 
     a = @tabs
     r = a.grep(regex)
