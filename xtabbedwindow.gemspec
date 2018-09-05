@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'xtabbedwindow'
-  s.version = '0.1.1'
+  s.version = '0.1.2'
   s.summary = 'Finds and selects a tabbed document within a window ' + 
       'automatically (X11 Windows only).'
   s.authors = ['James Robertson']

@@ -11,9 +11,12 @@ class XTabbedWindow
 
   attr_reader :window, :tabs
 
-  def initialize(name, new_tab: "Ctrl+t", scan_tabs: true)
+  # next_tab values e.g. Ctrl+Tab (default), Ctrl+Alt+Page_Up
+  #
+  def initialize(name, new_tab: "Ctrl+t", scan_tabs: true, 
+                 next_tab: "Ctrl+Tab")
 
-    @new_tab = new_tab
+    @new_tab, @next_tab = new_tab, next_tab
     a = WMCtrl.instance.windows
     @window = a.detect {|x| x.title =~ /#{name}/i}
 
@@ -51,7 +54,9 @@ class XTabbedWindow
 
     XDo::Keyboard.char("Alt+1")
     sleep 0.1
-    i.times { XDo::Keyboard.char("Ctrl+Tab") }
+    i.times { XDo::Keyboard.char(@next_tab) }
+    
+    true
 
   end
   
@@ -64,11 +69,12 @@ class XTabbedWindow
 
   def next_tab()
     sleep 0.05
-    XDo::Keyboard.char("Ctrl+Tab")
+    XDo::Keyboard.char(@next_tab)
   end
 
   def read_tabs()
-
+    
+    @window.activate
     XDo::Keyboard.char("Alt+1")
 
     start_tab_title = title()
@@ -96,6 +102,8 @@ class XTabbedWindow
     @tabs.grep(regex).any?
     
   end
+  
+  alias include? tab?
 
   def title()
     sleep 0.05
